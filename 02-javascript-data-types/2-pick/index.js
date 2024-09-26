@@ -4,6 +4,10 @@
  * @param {...string} fields - the properties paths to pick
  * @returns {object} - returns the new object
  */
-export const pick = (obj, ...fields) => {
-
-};
+export function pick(obj, ...fields) {
+    const result = {}
+    for (const el of fields) {
+        if (obj[el]) result[el] = obj[el]
+    }
+    return result
+}
