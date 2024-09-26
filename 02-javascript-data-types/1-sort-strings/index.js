@@ -10,5 +10,5 @@ export function sortStrings(arr, param = 'asc') {
     const collator = new Intl.Collator(locales, options);
     ascended = (a, b) => collator.compare(a, b);
     descended = (a, b) => collator.compare(b, a);
-    return param == 'desc' ? arr.toSorted(descended) : arr.toSorted(ascended);
+    return param === 'desc' ? arr.slice().sort(descended) : arr.slice().sort(ascended);
 }
