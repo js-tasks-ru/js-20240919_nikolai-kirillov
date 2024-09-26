@@ -10,19 +10,7 @@ export function sortStrings(arr, param = 'asc') {
 }
 
 export function comparer(a, b) {
-    a = reverseCase(a);
-    b = reverseCase(b);
-    return a.localeCompare(b);
-}
-
-export function reverseCase(str) {
-    let result = '';
-    for (const char of str) {
-        if (char === char.toUpperCase()) {
-            result += char.toLowerCase();
-        } else {
-            result += char.toUpperCase();
-        }
-    }
-    return result;
+    const locales = ["ru", "en"];
+    const options = { sensitivity: "variant", caseFirst: "upper" };
+    return a.localeCompare(b, locales, options);
 }
