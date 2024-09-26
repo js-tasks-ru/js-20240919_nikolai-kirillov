@@ -5,7 +5,6 @@
  * @returns {string[]}
  */
 export function sortStrings(arr, param = 'asc') {
-    if (param != 'asc' && param != 'desc') return
     const result = arr.toSorted(comparer);
     return param === 'desc' ? result.reverse() : result
 }
