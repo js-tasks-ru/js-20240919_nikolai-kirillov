@@ -5,15 +5,9 @@
  * @returns {object} - returns the new object
  */
 export function pick(obj, ...fields) {
-    const result = {};
-    const object = arguments[0];
-    const strings = [];
-    for (const el of arguments) {
-        strings.push(el);
+    const result = {}
+    for (const el of fields) {
+        if (obj[el]) result[el] = obj[el]
     }
-    strings.splice(0, 1);
-    for (const el of strings) {
-        if (object[el]) result[el] = object[el]
-    }
-    return result;
+    return result
 }

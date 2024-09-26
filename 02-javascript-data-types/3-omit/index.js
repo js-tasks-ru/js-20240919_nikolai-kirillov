@@ -5,14 +5,8 @@
  * @returns {object} - returns the new object
  */
 export function omit(obj, ...fields) {
-    const object = arguments[0];
-    const strings = [];
-    for (const el of arguments) {
-        strings.push(el);
+    for (const el of fields) {
+        if (obj[el]) delete obj[el]
     }
-    strings.splice(0, 1);
-    for (const el of strings) {
-        if (object[el]) delete object[el]
-    }
-    return object;
+    return obj
 }
