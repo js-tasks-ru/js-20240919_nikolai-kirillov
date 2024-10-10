@@ -7,7 +7,7 @@ export default class SortableTable {
     this.data = data;
     this.createHeaders();
     this.createArrowElement();
-    this.element = this.createTalbeElement();
+    this.element = this.createTableElement();
     this.subElements = {
       header: this.element.querySelector('[data-element="header"]'),
       body: this.element.querySelector('[data-element="body"]'),
@@ -31,27 +31,27 @@ export default class SortableTable {
     this.arrowElement = arrow;
   }
 
-  createTalbeElement() {
+  createTableElement() {
     const element = document.createElement('div');
-    element.innerHTML = this.createTableTemplate();
+    element.innerHTML = this.createElementTemplate();
     return element.firstElementChild;
   }
 
-  createTableTemplate() {
+  createElementTemplate() {
     return `
 <div data-element="productsContainer" class="products-list__container">
   <div class="sortable-table">
     <div data-element="header" class="sortable-table__header sortable-table__row">
-      ${this.createHeader()}
+      ${this.createHeaderTemplate()}
     </div>
     <div data-element="body" class="sortable-table__body">
-      ${this.createTable()}
+      ${this.createTableTemplate()}
     </div>
   </div>
 </div>`;
   }
 
-  createHeader() {
+  createHeaderTemplate() {
     let headerTemplate = ``;
     this.headerConfig.forEach(header => {
       headerTemplate += `
@@ -62,7 +62,7 @@ export default class SortableTable {
     return headerTemplate;
   }
 
-  createTable() {
+  createTableTemplate() {
     let tableTemplate = ``;
     this.data.forEach(cell => {
       tableTemplate += `
@@ -77,7 +77,6 @@ export default class SortableTable {
   createTableByHeaders(cell) {
     let cellTemplate = ``;
     for (const header of this.headers) {
-      console.log(this.headers)
       header === 'images'
         ? cellTemplate += `<div class="sortable-table__cell"> <img class="sortable-table-image" alt="Image" src="${cell.images[0].url}"></div>`
         : cellTemplate += `<div class="sortable-table__cell">${cell[header]}</div>`;
@@ -88,8 +87,8 @@ export default class SortableTable {
 
   sort(fieldValue, orderValue) {
     this.data = this.sortValues(this.data, orderValue, fieldValue);
-    this.subElements.body.innerHTML = this.createTable();
-    const headerElement = document.querySelector(`[data-id=${fieldValue}]`);
+    this.subElements.body.innerHTML = this.createTableTemplate();
+    const headerElement = this.subElements.header.querySelector(`[data-id=${fieldValue}]`);
     headerElement.setAttribute('data-order', orderValue);
     headerElement.appendChild(this.arrowElement);
   }
@@ -103,11 +102,11 @@ export default class SortableTable {
       const collator = new Intl.Collator(locales, options);
       const ascended = (a, b) => collator.compare(a[value], b[value]);
       const descended = (a, b) => collator.compare(b[value], a[value]);
-      return param === "desc" ? data.slice().sort(descended) : data.slice().sort(ascended);
+      return param === "desc" ? data.sort(descended) : data.sort(ascended);
     } else {
       const ascended = (a, b) => (a[value] - b[value]);
       const descended = (a, b) => (b[value] - a[value]);
-      return param === "desc" ? data.slice().sort(descended) : data.slice().sort(ascended);
+      return param === "desc" ? data.sort(descended) : data.sort(ascended);
     }
   }
 
