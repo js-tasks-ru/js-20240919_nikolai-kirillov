@@ -2,7 +2,7 @@ export default class NotificationMessage {
     static previousMessage;
 
     constructor(message = '', options = {}) {
-        this.options = {...options};
+        this.options = { ...options };
         this.message = message;
         this.duration = options.duration;
         this.type = options.type;
@@ -37,11 +37,11 @@ export default class NotificationMessage {
     }
 
     remove() {
-        this.destroy();
+        this.element.remove();
     }
 
     destroy() {
-        if (this.element) this.element.remove();
         if (this.messageTimer) clearTimeout(this.messageTimer);
+        this.remove();
     }
 }
