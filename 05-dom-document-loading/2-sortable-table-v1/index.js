@@ -28,7 +28,7 @@ export default class SortableTable {
 <span data-element="arrow" class="sortable-table__sort-arrow">
   <span class="sort-arrow"></span>
 </span>`;
-    this.arrowElement = arrow;
+    this.arrowElement = arrow.firstElementChild;
   }
 
   createTableElement() {
@@ -66,7 +66,7 @@ export default class SortableTable {
     let tableTemplate = ``;
     this.data.forEach(cell => {
       tableTemplate += `
-<a href="/products/3d-ochki-optoma-zf2300" class="sortable-table__row">
+<a href="/products/${cell.id}" class="sortable-table__row">
   ${this.createTableByHeaders(cell)}
 </a>
     `;
@@ -118,4 +118,3 @@ export default class SortableTable {
     this.remove();
   }
 }
-
