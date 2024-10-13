@@ -16,10 +16,10 @@ export default class SortableTableV2 extends SortableTable {
   }
 
   addListeners() {
-    this.subElements.header.addEventListener('pointerdown', this.resort);
+    this.subElements.header.addEventListener('pointerdown', this.handleHeaderPointerdown);
   }
 
-  resort = (event) => {
+  handleHeaderPointerdown = (event) => {
     const closestHeader = event.target.closest('.sortable-table__cell');
     if (!closestHeader) return;
 
@@ -44,8 +44,6 @@ export default class SortableTableV2 extends SortableTable {
   }
 
   removeListeners() {
-    for (const header of this.subElements.header.children) {
-      header.removeEventListener('pointerdown', this.resort);
-    }
+    this.subElements.header.removeEventListener('pointerdown', this.handleHeaderPointerdown);
   }
 }
