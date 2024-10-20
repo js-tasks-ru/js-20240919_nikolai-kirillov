@@ -1,5 +1,6 @@
 export default class ColumnChart {
     chartHeight = 50;
+    subElements = {};
 
     constructor(options = {}) {
         const {
@@ -13,39 +14,49 @@ export default class ColumnChart {
         this.value = options.value;
         this.link = options.link;
         this.formatHeading = formatHeading;
-        this.element = this.createEl();
+        this.element = this.createElement();
+        this.getSubElemets();
     }
 
-    createEl() {
+    getSubElemets() {
+        this.element.querySelectorAll('[data-element]').forEach(element => {
+            this.subElements[element.dataset.element] = element;
+        });
+    }
+
+    createElement() {
         const element = document.createElement('div');
-        (!!this.data && !!this.data.length) ? '' : element.classList.add('column-chart_loading');
         element.innerHTML = this.createTemplate();
-        return element;
+        return element.firstElementChild;
     }
 
     createTemplate() {
         return `
-          <div class="column-chart" style="--chart-height: ${this.chartHeight}">
+          <div class="column-chart ${!this.data ? 'column-chart_loading' : ''}" style="--chart-height: ${this.chartHeight}">
       <div class="column-chart__title">
         Total ${this.label}
-        ${this.addLink()}
+        ${this.createLinkTemplate()}
       </div>
       <div class="column-chart__container">
-        <div data-element="header" class="column-chart__header">${this.formatHeading(this.value)}</div>
+        ${this.createHeaderTemplate()}
         <div data-element="body" class="column-chart__chart">
-        ${this.createCharts()}
+        ${this.createBodyTemplate()}
         </div>
       </div>
     </div>
         `
     }
 
-    addLink() {
+    createLinkTemplate() {
         if (!!this.link) return `<a href='${this.link}' class="column-chart__link">View all</a>`
         return ''
     }
 
-    createCharts() {
+    createHeaderTemplate() {
+        return `<div data-element="header" class="column-chart__header">${this.formatHeading(this.value)}</div>`
+    }
+
+    createBodyTemplate() {
         let resultTemplate = ``;
         if (this.data) {
             const chartValues = this.calculateChartValues(this.data);
@@ -70,7 +81,10 @@ export default class ColumnChart {
 
     update(newData) {
         this.data = newData;
-        this.element.innerHTML = this.createTemplate();
+        this.value = newData.reduce((acc, item) => acc + item, 0);
+        this.subElements.header.innerHTML = this.createHeaderTemplate();
+        this.subElements.body.innerHTML = this.createBodyTemplate();
+        this.element.className = 'column-chart';
     }
 
     remove() {
