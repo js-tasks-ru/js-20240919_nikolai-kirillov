@@ -15,10 +15,10 @@ export default class ColumnChart {
         this.link = options.link;
         this.formatHeading = formatHeading;
         this.element = this.createElement();
-        this.getSubElemets();
+        this.getSubElements();
     }
 
-    getSubElemets() {
+    getSubElements() {
         this.element.querySelectorAll('[data-element]').forEach(element => {
             this.subElements[element.dataset.element] = element;
         });
