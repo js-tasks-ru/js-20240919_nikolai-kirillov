@@ -257,7 +257,7 @@ export default class ProductForm {
           body: form
         });
         this.newAttach = { url: response.data.link, source: attach.name };
-        this.appendNewAttachTemplate();
+        this.appendNewAttachElement();
       } catch (error) {
         console.error(error);
       }
@@ -267,7 +267,7 @@ export default class ProductForm {
     inputElement.remove();
   }
 
-  appendNewAttachTemplate() {
+  appendNewAttachElement() {
     const attachElement = this.element.querySelector('ul.sortable-list');
     const newAttachElement = document.createElement('div');
     newAttachElement.innerHTML = `<li class="products-edit__imagelist-item sortable-list__item" style="">
