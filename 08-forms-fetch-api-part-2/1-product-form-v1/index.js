@@ -108,7 +108,7 @@ export default class ProductForm {
         <div class="form-group form-group__half_left">
             <fieldset>
                 <label class="form-label">Название товара</label>
-                <input id='title' value='${this.productData?.title}' required="" type="text" name="title"
+                <input id='title' value='${escapeHtml(this.productData?.title)}' required="" type="text" name="title"
                     class="form-control" placeholder="Название товара">
             </fieldset>
         </div>
@@ -116,7 +116,7 @@ export default class ProductForm {
             <label class="form-label">Описание</label>
             <textarea id='description' required="" class="form-control" name="description"
                 data-element="productDescription"
-                placeholder="Описание товара">${this.productData?.description}</textarea>
+                placeholder="Описание товара">${escapeHtml(this.productData?.description)}</textarea>
         </div>
         <div class="form-group form-group__wide" data-element="sortable-list-container">
             <label class="form-label">Фото</label>
@@ -136,18 +136,18 @@ export default class ProductForm {
         <div class="form-group form-group__half_left form-group__two-col">
             <fieldset>
                 <label class="form-label">Цена ($)</label>
-                <input id="price" value='${this.productData?.price?.toString()}' required="" type="number" name="price"
+                <input id="price" value='${escapeHtml(this.productData?.price?.toString())}' required="" type="number" name="price"
                     class="form-control" placeholder="100">
             </fieldset>
             <fieldset>
                 <label class="form-label">Скидка ($)</label>
-                <input id="discount" value='${this.productData?.discount?.toString()}' required="" type="number"
+                <input id="discount" value='${escapeHtml(this.productData?.discount?.toString())}' required="" type="number"
                     name="discount" class="form-control" placeholder="0">
             </fieldset>
         </div>
         <div class="form-group form-group__part-half">
             <label class="form-label">Количество</label>
-            <input id="quantity" value='${this.productData?.quantity?.toString()}' required="" type="number"
+            <input id="quantity" value='${escapeHtml(this.productData?.quantity?.toString())}' required="" type="number"
                 class="form-control" name="quantity" placeholder="1">
         </div>
         <div class="form-group form-group__part-half">
@@ -193,11 +193,11 @@ export default class ProductForm {
       if (category.subcategories.length) {
         category.subcategories.forEach(subcategory => {
           const isSelected = this.productData.subcategory === subcategory.id ? 'selected' : '';
-          categoryTemplate += `<option ${isSelected} value="${subcategory.id}">${category.title} > ${subcategory.title}</option>`;
+          categoryTemplate += `<option ${isSelected} value="${escapeHtml(subcategory.id)}">${escapeHtml(category.title)} > ${escapeHtml(subcategory.title)}</option>`;
         });
       } else {
         const isSelected = this.productData.subcategory === category.id ? 'selected' : '';
-        categoryTemplate += `<option ${isSelected} value="${category.id}">${category.title}</option>`;
+        categoryTemplate += `<option ${isSelected} value="${escapeHtml(category.id)}">${escapeHtml(category.title)}</option>`;
       }
     }
     return categoryTemplate;
@@ -221,13 +221,6 @@ export default class ProductForm {
     const uploadButton = this.element.querySelector("[name='uploadImage']");
     uploadButton.addEventListener('pointerdown', this.handleAttachUpload);
     this.subElements.productForm.addEventListener('submit', this.handleSubmit);
-  }
-
-  recreateBinEventListeners() {
-    const binButtons = this.element.querySelectorAll(".binButton");
-    for (const button of binButtons) {
-      button.addEventListener('pointerdown', this.handleAttachDelete);
-    }
   }
 
   removeListeners() {
@@ -282,8 +275,8 @@ export default class ProductForm {
         <img src="icon-trash.svg" data-delete-handle="" alt="delete">
     </button>
 </li>`;
+    newAttachElement.querySelector(".binButton").addEventListener('pointerdown', this.handleAttachDelete);
     attachElement.appendChild(newAttachElement.firstElementChild);
-    this.recreateBinEventListeners();
   }
 
   handleAttachDelete = (event) => {
